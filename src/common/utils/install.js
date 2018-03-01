@@ -28,7 +28,7 @@ function installConfigFile() {
 function getAutoRotateCommand(platform, appExecutablePath) {
   if (path.basename(appExecutablePath).match(/electron/i)) {
     return `cd ${appExecutablePath.split('/node_modules')[0]}
-  npm run start --- -- rotate
+  npm run start --- -- rotate > /dev/null 2>&1 &
   cd $(dirname $0)/../../`
   }
 

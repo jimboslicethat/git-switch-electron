@@ -1,5 +1,6 @@
 import menubar from 'menubar'
 import path from 'path'
+import * as net from 'net'
 
 import CHANNELS from './common/ipc-channels'
 import * as notificationService from './common/services/notification'
@@ -33,6 +34,26 @@ if (isSecondInstance) {
 
 mb.on('ready', handleAppReady)
 mb.on('after-create-window', handleAfterCreateWindow)
+
+const server = net.createServer(function(connection) {
+  connection.on('data', dataBuffer => {
+    const data = dataBuffer.toString()
+    console.log('GOT DATA', data)
+
+    if (data === 'rotate') {
+      console.log('rotating users...')
+      rotateUsers()
+    }
+  })
+})
+const socketPath = `${mb.app.getPath('temp')}git-switch.sock`
+console.log('listening at', socketPath)
+server.listen(socketPath)
+
+mb.app.on('quit', function() {
+  server.close()
+  console.log('closed server')
+})
 
 function handleAppReady() {
   if (isDev) mb.showWindow()

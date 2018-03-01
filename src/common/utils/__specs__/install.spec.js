@@ -102,9 +102,9 @@ describe('utils/install', () => {
 
     describe('when app executable is electron', () => {
       beforeEach(() => {
-        appExecutablePath = '/herp/derp/node_modules/electron-prebuilt-compile/node_modules/dist/electron'
+        appExecutablePath = '/herp/derp/node_modules/electron-prebuilt-compile/node_modules/dist/Electron'
         autoRotate = `cd /herp/derp
-  npm run start --- -- rotate
+  npm run start --- -- rotate > /dev/null 2>&1 &
   cd $(dirname $0)/../../`
         postCommitFileContents = getPostCommitFileContents(autoRotate)
       })
